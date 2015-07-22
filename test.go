@@ -6,12 +6,23 @@ import (
 )
 
 func main() {
+	// global settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfGlobal
 	gs := wkhtmltopdf.NewGolbalSettings()
+	gs.Set("outputFormat", "pdf")
 	gs.Set("out", "test.pdf")
-	gs.Set("load.cookieJar", "myjar.jar")
+	gs.Set("orientation", "Portrait")
+	gs.Set("colorMode", "Color")
+	gs.Set("size.paperSize", "A4")
+	//gs.Set("load.cookieJar", "myjar.jar")
+	// object settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfGlobal
 	os := wkhtmltopdf.NewObjectSettings()
-	//os.Set("page", "file:///home/jimmy/libwk/invoice.html")
-	os.Set("page", "http://www.google.se")
+	os.Set("page", "http://www.slashdot.org")
+	os.Set("load.debugJavascript", "false")
+	//os.Set("load.jsdelay", "1000") // wait max 1s
+	os.Set("web.enableJavascript", "false")
+	os.Set("web.enablePlugins", "false")
+	os.Set("web.loadImages", "true")
+	os.Set("web.background", "true")
 
 	c := gs.NewConverter()
 	c.Add(os)
