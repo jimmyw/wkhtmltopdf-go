@@ -123,6 +123,10 @@ func (self *Converter) Convert() error {
 	return nil
 }
 
+func (self *Converter) Add(settings *ObjectSettings) {
+	C.wkhtmltopdf_add_object(self.c, settings.s, nil)
+}
+
 func (self *Converter) ErrorCode() int {
 	return int(C.wkhtmltopdf_http_error_code(self.c))
 }

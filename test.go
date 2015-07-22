@@ -14,6 +14,7 @@ func main() {
 	os.Set("page", "http://www.google.se")
 
 	c := gs.NewConverter()
+	c.Add(os)
 
 	c.ProgressChanged = func(c *wkhtmltopdf.Converter, b int) {
 		fmt.Printf("Progress: %d\n", b)
