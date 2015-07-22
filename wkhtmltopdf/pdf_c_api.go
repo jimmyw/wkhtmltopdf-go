@@ -1,7 +1,7 @@
 package wkhtmltopdf
 
-//#cgo CFLAGS: -I/home/jimmy/libwk/include
-//#cgo LDFLAGS: -L/home/jimmy/libwk/lib -lwkhtmltox -Wall -ansi -pedantic -ggdb
+//#cgo CFLAGS: -I/usr/local/include
+//#cgo LDFLAGS: -L/usr/local/lib -lwkhtmltox -Wall -ansi -pedantic -ggdb
 //#include <stdbool.h>
 //#include <stdio.h>
 //#include <string.h>
