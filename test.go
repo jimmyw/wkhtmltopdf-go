@@ -14,7 +14,7 @@ func main() {
 	gs.Set("colorMode", "Color")
 	gs.Set("size.paperSize", "A4")
 	//gs.Set("load.cookieJar", "myjar.jar")
-	// object settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfGlobal
+	// object settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfObject
 	os := wkhtmltopdf.NewObjectSettings()
 	os.Set("page", "http://www.slashdot.org")
 	os.Set("load.debugJavascript", "false")
