@@ -26,6 +26,7 @@ func main() {
 
 	c := gs.NewConverter()
 	c.Add(os)
+	//c.AddHtml(os, "<html><body><h3>HELLO</h3><p>World</p></body></html>")
 
 	c.ProgressChanged = func(c *wkhtmltopdf.Converter, b int) {
 		fmt.Printf("Progress: %d\n", b)
