@@ -127,6 +127,12 @@ func (self *Converter) Add(settings *ObjectSettings) {
 	C.wkhtmltopdf_add_object(self.c, settings.s, nil)
 }
 
+func (self *Converter) AddHtml(settings *ObjectSettings, data string) {
+	c_data := C.CString(data)
+	defer C.free(unsafe.Pointer(c_data))
+	C.wkhtmltopdf_add_object(self.c, settings.s, c_data)
+}
+
 func (self *Converter) ErrorCode() int {
 	return int(C.wkhtmltopdf_http_error_code(self.c))
 }
