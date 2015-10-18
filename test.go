@@ -40,6 +40,9 @@ func main() {
 	c.Phase = func(c *wkhtmltopdf.Converter) {
 		fmt.Printf("Phase\n")
 	}
+	c.Finished = func(c *wkhtmltopdf.Converter, s int) {
+		fmt.Printf("Finished: %d\n", s)
+	}
 	c.Convert()
 
 	fmt.Printf("Got error code: %d\n", c.ErrorCode())
