@@ -1,8 +1,8 @@
 package main
 
 import (
+	"./wkhtmltopdf"
 	"fmt"
-	"github.com/hailocab/wkhtmltopdf-go/wkhtmltopdf"
 )
 
 func main() {
