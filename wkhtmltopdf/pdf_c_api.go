@@ -1,17 +1,19 @@
 package wkhtmltopdf
 
-//#cgo CFLAGS: -I/home/jimmy/libwk/include
-//#cgo LDFLAGS: -L/home/jimmy/libwk/lib -lwkhtmltox -Wall -ansi -pedantic -ggdb
+//#cgo CFLAGS: -I/usr/local/include
+//#cgo LDFLAGS: -L/usr/local/lib -lwkhtmltox -Wall -ansi -pedantic -ggdb
 //#include <stdbool.h>
 //#include <stdio.h>
 //#include <string.h>
 //#include <stdlib.h>
 //#include <wkhtmltox/pdf.h>
+//extern void finished_cb(void*, const int);
 //extern void progress_changed_cb(void*, const int);
 //extern void error_cb(void*, char *msg);
 //extern void warning_cb(void*, char *msg);
 //extern void phase_changed_cb(void*);
 //static void setup_callbacks(wkhtmltopdf_converter * c) {
+//  wkhtmltopdf_set_finished_callback(c, (wkhtmltopdf_int_callback)finished_cb);
 //  wkhtmltopdf_set_progress_changed_callback(c, (wkhtmltopdf_int_callback)progress_changed_cb);
 //  wkhtmltopdf_set_error_callback(c, (wkhtmltopdf_str_callback)error_cb);
 //  wkhtmltopdf_set_warning_callback(c, (wkhtmltopdf_str_callback)warning_cb);
@@ -34,6 +36,7 @@ type ObjectSettings struct {
 
 type Converter struct {
 	c               *C.wkhtmltopdf_converter
+	Finished        func(*Converter, int)
 	ProgressChanged func(*Converter, int)
 	Error           func(*Converter, string)
 	Warning         func(*Converter, string)
@@ -76,6 +79,14 @@ func (self *GlobalSettings) NewConverter() *Converter {
 	C.setup_callbacks(c.c)
 
 	return c
+}
+
+//export finished_cb
+func finished_cb(c unsafe.Pointer, s C.int) {
+	conv := converter_map[c]
+	if conv.Finished != nil {
+		conv.Finished(conv, int(s))
+	}
 }
 
 //export progress_changed_cb
@@ -121,6 +132,16 @@ func (self *Converter) Convert() error {
 		return fmt.Errorf("Convert failed")
 	}
 	return nil
+}
+
+func (self *Converter) Add(settings *ObjectSettings) {
+	C.wkhtmltopdf_add_object(self.c, settings.s, nil)
+}
+
+func (self *Converter) AddHtml(settings *ObjectSettings, data string) {
+	c_data := C.CString(data)
+	defer C.free(unsafe.Pointer(c_data))
+	C.wkhtmltopdf_add_object(self.c, settings.s, c_data)
 }
 
 func (self *Converter) ErrorCode() int {
