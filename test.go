@@ -3,13 +3,14 @@ package main
 import (
 	"./wkhtmltopdf"
 	"fmt"
+	"io/ioutil"
 )
 
 func main() {
 	// global settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfGlobal
 	gs := wkhtmltopdf.NewGolbalSettings()
 	gs.Set("outputFormat", "pdf")
-	gs.Set("out", "test.pdf")
+	gs.Set("out", "")
 	gs.Set("orientation", "Portrait")
 	gs.Set("colorMode", "Color")
 	gs.Set("size.paperSize", "A4")
@@ -44,6 +45,12 @@ func main() {
 		fmt.Printf("Finished: %d\n", s)
 	}
 	c.Convert()
+
+	payload, length := c.Payload()
+
+	ioutil.WriteFile("out.pdf", payload, 0644)
+
+	fmt.Printf("Length: %d\n", length)
 
 	fmt.Printf("Got error code: %d\n", c.ErrorCode())
 }
