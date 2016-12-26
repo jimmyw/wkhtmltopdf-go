@@ -16,17 +16,17 @@ func main() {
 	gs.Set("size.paperSize", "A4")
 	//gs.Set("load.cookieJar", "myjar.jar")
 	// object settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfObject
-	os := wkhtmltopdf.NewObjectSettings()
-	os.Set("page", "http://www.slashdot.org")
-	os.Set("load.debugJavascript", "false")
+	objset := wkhtmltopdf.NewObjectSettings()
+	objset.Set("page", "http://www.slashdot.org")
+	objset.Set("load.debugJavascript", "false")
 	//os.Set("load.jsdelay", "1000") // wait max 1s
-	os.Set("web.enableJavascript", "false")
-	os.Set("web.enablePlugins", "false")
-	os.Set("web.loadImages", "true")
-	os.Set("web.background", "true")
+	objset.Set("web.enableJavascript", "false")
+	objset.Set("web.enablePlugins", "false")
+	objset.Set("web.loadImages", "true")
+	objset.Set("web.background", "true")
 
 	c := gs.NewConverter()
-	c.Add(os)
+	c.Add(objset)
 	//c.AddHtml(os, "<html><body><h3>HELLO</h3><p>World</p></body></html>")
 
 	c.ProgressChanged = func(c *wkhtmltopdf.Converter, b int) {
@@ -46,11 +46,9 @@ func main() {
 	}
 	c.Convert()
 
-	payload, length := c.Payload()
+	payload, _ := c.Payload()
 
-	ioutil.WriteFile("out.pdf", payload, 0644)
-
-	fmt.Printf("Length: %d\n", length)
+	ioutil.WriteFile("test.pdf", payload, 0644)
 
 	fmt.Printf("Got error code: %d\n", c.ErrorCode())
 }
