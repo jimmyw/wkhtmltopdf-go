@@ -27,8 +27,6 @@ import (
 	"reflect"
 )
 
-type long int64
-
 type GlobalSettings struct {
 	s *C.wkhtmltopdf_global_settings
 }
