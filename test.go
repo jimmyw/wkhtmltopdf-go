@@ -7,7 +7,7 @@ import (
 
 func main() {
 	// global settings: http://www.cs.au.dk/~jakobt/libwkhtmltox_0.10.0_doc/pagesettings.html#pagePdfGlobal
-	gs := wkhtmltopdf.NewGolbalSettings()
+	gs := wkhtmltopdf.NewGlobalSettings()
 	gs.Set("outputFormat", "pdf")
 	gs.Set("out", "test.pdf")
 	gs.Set("orientation", "Portrait")
