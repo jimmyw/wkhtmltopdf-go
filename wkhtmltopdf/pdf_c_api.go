@@ -24,6 +24,7 @@ import "C"
 import (
 	"fmt"
 	"unsafe"
+	"reflect"
 )
 
 type GlobalSettings struct {
@@ -151,4 +152,18 @@ func (self *Converter) ErrorCode() int {
 
 func (self *Converter) Destroy() {
 	C.wkhtmltopdf_destroy_converter(self.c)
+}
+
+func (self *Converter) Payload() ([]byte, int) {
+	var payloadptr *C.uchar
+	length := int(C.wkhtmltopdf_get_output(self.c, &payloadptr))
+	var payload []byte
+	header := (*reflect.SliceHeader)(unsafe.Pointer(&payload))
+
+	header.Len = length
+
+	header.Cap = length
+
+	header.Data = uintptr(unsafe.Pointer(payloadptr))
+	return payload, length
 }
