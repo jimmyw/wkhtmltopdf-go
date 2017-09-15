@@ -50,10 +50,11 @@ func init() {
 	C.wkhtmltopdf_init(C.false)
 }
 
-func NewGolbalSettings() *GlobalSettings {
+func NewGlobalSettings() *GlobalSettings {
 	return &GlobalSettings{s: C.wkhtmltopdf_create_global_settings()}
 }
 
+// See https://wkhtmltopdf.org/libwkhtmltox/pagesettings.html#pagePdfGlobal for more setttings
 func (self *GlobalSettings) Set(name, value string) {
 	c_name := C.CString(name)
 	c_value := C.CString(value)
@@ -128,8 +129,8 @@ func (self *Converter) Convert() error {
 	converter_map[unsafe.Pointer(self.c)] = self
 	status := C.wkhtmltopdf_convert(self.c)
 	delete(converter_map, unsafe.Pointer(self.c))
-	if status != C.int(0) {
-		return fmt.Errorf("Convert failed")
+	if status != C.int(1) {
+		return fmt.Errorf("Convert failed (%d)", status)
 	}
 	return nil
 }
